@@ -9,6 +9,7 @@ char kolumny[9]={'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 void printBoard();
 void getMove(string name, char symbol);
 int checkHorizontally(string name, char symbol);
+int checkVertically(string name, char symbol);
 
 int main(){
 	int moveA;
@@ -40,15 +41,23 @@ int main(){
 	A = 'a';
 	nameB = 'B';
 	B = 'b';
-	
+	/*
+	board[3][5]='a';
+	board[4][5]='a';
+	board[5][5]='a';
+	board[6][5]='a';
+	*/
 	int end;
 	while (1){
 
 		printBoard();
 		getMove(nameA, A);
+		checkHorizontally(nameA, A);
+		checkVertically(nameA, A);
 		printBoard();
 		getMove(nameB, B);
 		checkHorizontally(nameB, B);
+		checkVertically(nameB, B);
 	}	
 	return 0;
 }
@@ -70,7 +79,6 @@ void printBoard(){
 void getMove(string name, char symbol){
 	int move;
 	int temp;
-
 	do {
 		cout<<endl<<"Give me the column for the move of the "<<name<<" player: ";
 		cin>>move;
@@ -92,15 +100,34 @@ int checkHorizontally(string name, char symbol){
 	int temp;
 	for (int i=0; i<7; i++){
 		temp=0;
-		for (int j=1; j<9; j++){ //zle, musi byc ciagled
+		for (int j=0; j<9; j++){ //zle, musi byc ciagled
 			if (board[i][j]==symbol){
 				temp++;
 			}
 			else
 				temp=0;
 
-			if (temp==3){
-				cout<<"THE END"<<name<<" wins!"<<endl;
+			if (temp==4){
+				cout<<"THE END! "<<name<<" wins!"<<endl;
+				return 0;
+			}
+		}
+	}
+	return 0;
+}
+
+int checkVertically(string name, char symbol){
+	int temp;
+	
+	for (int i=0; i<9; i++){
+		temp=0;
+		for (int j=0; j<7; j++){
+			if (board[j][i]==symbol)
+				temp++;
+			else
+				temp=0;
+			if (temp==4){
+				cout<<"THE END! "<<name<<" wins!"<<endl;
 				return 0;
 			}
 		}
