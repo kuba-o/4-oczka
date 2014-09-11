@@ -10,6 +10,7 @@ void printBoard();
 void getMove(string name, char symbol);
 int checkHorizontally(string name, char symbol);
 int checkVertically(string name, char symbol);
+int checkSlantDown(string name, char symbol);
 
 int main(){
 	int moveA;
@@ -42,10 +43,10 @@ int main(){
 	nameB = 'B';
 	B = 'b';
 	/*
-	board[3][5]='a';
-	board[4][5]='a';
-	board[5][5]='a';
-	board[6][5]='a';
+	board[1][1]='a';
+	board[2][2]='a';
+	board[3][3]='a';
+	board[4][4]='a';
 	*/
 	int end;
 	while (1){
@@ -54,6 +55,7 @@ int main(){
 		getMove(nameA, A);
 		checkHorizontally(nameA, A);
 		checkVertically(nameA, A);
+		checkSlantDown(nameA, A);
 		printBoard();
 		getMove(nameB, B);
 		checkHorizontally(nameB, B);
@@ -129,6 +131,26 @@ int checkVertically(string name, char symbol){
 			if (temp==4){
 				cout<<"THE END! "<<name<<" wins!"<<endl;
 				return 0;
+			}
+		}
+	}
+	return 0;
+}
+
+int checkSlantDown(string name, char symbol){
+	int temp;
+	for (int i=0; i<6; i++){
+		for (int j=0; j<4; j++){
+			temp=0;
+			for (int m=0; m<4; m++){
+				if (board[i+m][j+m]==symbol)
+					temp++;
+				else
+					temp=0;
+				if (temp==4){
+				cout<<"THE END! "<<name<<" wins!"<<endl;
+				return 0;	
+				}
 			}
 		}
 	}
