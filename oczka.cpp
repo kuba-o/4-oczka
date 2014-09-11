@@ -58,6 +58,7 @@ int main(){
 	}
 	if (movesDone>62)
 		cout<<"Draw!";
+	printBoard();
 	cout<<endl;
 	return 0;
 }
