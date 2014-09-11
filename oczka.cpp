@@ -6,12 +6,16 @@ using namespace std;
 char board[7][9];
 char kolumny[9]={'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
+bool end=0;
+int temp;
+int movesDone=0;
 void printBoard();
 void getMove(string name, char symbol);
-int checkHorizontally(string name, char symbol);
-int checkVertically(string name, char symbol);
-int checkSlantDown(string name, char symbol);
-
+void checkHorizontally(string name, char symbol);
+void checkVertically(string name, char symbol);
+void checkSlantDown(string name, char symbol);
+void checkSlantUp(string name, char symbol);
+void checkIfWin(string name, char symbol);
 int main(){
 	int moveA;
 	int moveB;
@@ -19,15 +23,15 @@ int main(){
 	string nameB;
 	char A;
 	char B;
-	int zero=0;
-	int* temp = &zero;
+
+	system("clear"); 
 
 	//creating an empty board
 	for (int i=0; i<7; i++){
 		for (int j=0;j<9; j++)
 			board[i][j]=' ';
 	}
-	/*	
+	
 	cout<<"Welcome to the game. It is ment for 2 players. Please type the name of the first player: ";
 	cin>>nameA;
 	cout<<"Now please type the symbol of the player "<<nameA<<": ";
@@ -37,30 +41,24 @@ int main(){
 	cin>>nameB;
 	cout<<"Please type the symbol of the player "<<nameB<<": ";
 	cin>>B;
-	*/
-	nameA = 'A';
-	A = 'a';
-	nameB = 'B';
-	B = 'b';
-	/*
-	board[1][1]='a';
-	board[2][2]='a';
-	board[3][3]='a';
-	board[4][4]='a';
-	*/
-	int end;
-	while (1){
+	system("clear");
+
+	while (end==0&&movesDone<63){
 
 		printBoard();
 		getMove(nameA, A);
-		checkHorizontally(nameA, A);
-		checkVertically(nameA, A);
-		checkSlantDown(nameA, A);
+		system("clear");  //pod windowsem "clear" zamienic na "cls"
+		checkIfWin(nameA, A);
 		printBoard();
-		getMove(nameB, B);
-		checkHorizontally(nameB, B);
-		checkVertically(nameB, B);
-	}	
+		if (end==0&&movesDone<63){
+			getMove(nameB, B);
+			system("clear");  //pod windowsem "clear" zamienic na "cls"
+			checkIfWin(nameB, B);
+		}
+	}
+	if (movesDone>62)
+		cout<<"Draw!";
+	cout<<endl;
 	return 0;
 }
 
@@ -80,7 +78,6 @@ void printBoard(){
 
 void getMove(string name, char symbol){
 	int move;
-	int temp;
 	do {
 		cout<<endl<<"Give me the column for the move of the "<<name<<" player: ";
 		cin>>move;
@@ -95,11 +92,10 @@ void getMove(string name, char symbol){
 		}	
 	board[temp][move-1]=symbol;
 	}
-	temp=0;
+	movesDone++;
 }
 
-int checkHorizontally(string name, char symbol){
-	int temp;
+void checkHorizontally(string name, char symbol){
 	for (int i=0; i<7; i++){
 		temp=0;
 		for (int j=0; j<9; j++){ //zle, musi byc ciagled
@@ -110,17 +106,14 @@ int checkHorizontally(string name, char symbol){
 				temp=0;
 
 			if (temp==4){
+				end=1;
 				cout<<"THE END! "<<name<<" wins!"<<endl;
-				return 0;
 			}
 		}
 	}
-	return 0;
 }
 
-int checkVertically(string name, char symbol){
-	int temp;
-	
+void checkVertically(string name, char symbol){
 	for (int i=0; i<9; i++){
 		temp=0;
 		for (int j=0; j<7; j++){
@@ -129,16 +122,14 @@ int checkVertically(string name, char symbol){
 			else
 				temp=0;
 			if (temp==4){
+				end=1;
 				cout<<"THE END! "<<name<<" wins!"<<endl;
-				return 0;
 			}
 		}
 	}
-	return 0;
 }
 
-int checkSlantDown(string name, char symbol){
-	int temp;
+void checkSlantDown(string name, char symbol){
 	for (int i=0; i<6; i++){
 		for (int j=0; j<4; j++){
 			temp=0;
@@ -148,11 +139,36 @@ int checkSlantDown(string name, char symbol){
 				else
 					temp=0;
 				if (temp==4){
-				cout<<"THE END! "<<name<<" wins!"<<endl;
-				return 0;	
+					end=1;
+					cout<<"THE END! "<<name<<" wins!"<<endl;
 				}
 			}
 		}
 	}
-	return 0;
+}
+
+void checkSlantUp(string name, char symbol){
+	for (int i=3; i<7; i++){
+		for (int j=0; j<6; j++){
+			temp=0;
+			for (int m=0; m<4; m++){
+				if (board[i-m][j+m]==symbol)
+					temp++;
+				else
+					temp=0;
+				if (temp==4){
+					end=1;
+					cout<<"THE END! "<<name<<" wins!"<<endl;
+						
+				}
+			}
+		}
+	}
+}
+
+void checkIfWin(string name, char symbol){
+	checkHorizontally(name, symbol);
+	checkVertically(name, symbol);
+	checkSlantDown(name, symbol);
+	checkSlantUp(name, symbol);
 }
