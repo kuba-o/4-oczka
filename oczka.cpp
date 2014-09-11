@@ -41,18 +41,18 @@ int main(){
 	cin>>nameB;
 	cout<<"Please type the symbol of the player "<<nameB<<": ";
 	cin>>B;
-	system("clear");
+	system("cls");
 
 	while (end==0&&movesDone<63){
 
 		printBoard();
 		getMove(nameA, A);
-		system("clear");  //pod windowsem "clear" zamienic na "cls"
+		system("cls");  //pod windowsem "clear" zamienic na "cls"
 		checkIfWin(nameA, A);
 		printBoard();
 		if (end==0&&movesDone<63){
 			getMove(nameB, B);
-			system("clear");  //pod windowsem "clear" zamienic na "cls"
+			system("cls");  //pod windowsem "clear" zamienic na "cls"
 			checkIfWin(nameB, B);
 		}
 	}
