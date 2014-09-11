@@ -1,8 +1,3 @@
-//kiedy wygrana
-//ustawic temp=0; potem petla najpierw wertykalnie i horyzontalnie sprawdzic znaki.
-//jak sprawdzam dla gracza1, to szuka czy jego symbol i jesli tak, do temp++. jesli temp==4, to wygrywa.
-//temp reset co kolumne/wiersz
-
 #include <iostream>
 #include <cstdlib>
 
@@ -13,6 +8,7 @@ char kolumny[9]={'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 void printBoard();
 void getMove(string name, char symbol);
+int checkHorizontally(string name, char symbol);
 
 int main(){
 	int moveA;
@@ -29,8 +25,7 @@ int main(){
 		for (int j=0;j<9; j++)
 			board[i][j]=' ';
 	}
-		
-	/*
+	/*	
 	cout<<"Welcome to the game. It is ment for 2 players. Please type the name of the first player: ";
 	cin>>nameA;
 	cout<<"Now please type the symbol of the player "<<nameA<<": ";
@@ -45,15 +40,16 @@ int main(){
 	A = 'a';
 	nameB = 'B';
 	B = 'b';
-	board[0][3]='k';
-	//printing the board
+	
+	int end;
 	while (1){
 
 		printBoard();
 		getMove(nameA, A);
 		printBoard();
 		getMove(nameB, B);
-	}
+		checkHorizontally(nameB, B);
+	}	
 	return 0;
 }
 
@@ -74,11 +70,11 @@ void printBoard(){
 void getMove(string name, char symbol){
 	int move;
 	int temp;
-	board[0][2]='z';
+
 	do {
-		cout<<endl	<<"Give me the column for the move of the "<<name<<" player: ";
+		cout<<endl<<"Give me the column for the move of the "<<name<<" player: ";
 		cin>>move;
-	}  while (board[0][move-1]!=' ' || move<1 || move>9); //co jesli pełna kolumna
+	}  while (board[0][move-1]!=' ' || move<1 || move>9);
 
 	if (board[0][move-1]==' '){
 		for (int i=0; i<8; i++){
@@ -89,6 +85,25 @@ void getMove(string name, char symbol){
 		}	
 	board[temp][move-1]=symbol;
 	}
-	
 	temp=0;
+}
+
+int checkHorizontally(string name, char symbol){
+	int temp;
+	for (int i=0; i<7; i++){
+		temp=0;
+		for (int j=1; j<9; j++){ //zle, musi byc ciagled
+			if (board[i][j]==symbol){
+				temp++;
+			}
+			else
+				temp=0;
+
+			if (temp==3){
+				cout<<"THE END"<<name<<" wins!"<<endl;
+				return 0;
+			}
+		}
+	}
+	return 0;
 }
